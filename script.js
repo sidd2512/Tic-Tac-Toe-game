@@ -1,9 +1,14 @@
 const gameInfo = document.querySelector('.gameInfo');
 const boxes = document.querySelectorAll('.box');
 const newGameBtn = document.querySelector('.btn');
+const xWinCountElement = document.querySelector('.x-win-count');
+const oWinCountElement = document.querySelector('.O-win-count');
 
 let currentPlayer;
+let startturn='X';
 let gameGrid;
+let xWinCount =0;
+let oWinCount =0;
 
 const winningPositions = [
     [0, 1, 2],
@@ -19,7 +24,7 @@ const winningPositions = [
 // Initialize the game
 function initialize() {
     // Set Current Player to X 
-    currentPlayer = 'X';
+    currentPlayer = startturn;
     gameInfo.textContent = `Current Player: ${currentPlayer}`;
 
     // Empty Kar Do Boxes 
@@ -32,12 +37,16 @@ function initialize() {
         box.classList = `box box${index+1}`;
     });
 
-    // Remove Active Class From Button
-    newGameBtn.classList.remove("active");
+    
+   
+   
+
 }
 
 initialize();
-
+function swapTurns() {
+    startturn = startturn === "X" ? "O" : "X";
+}
 
 // Handle Click Game 
 function handleClick(index) {
@@ -50,6 +59,19 @@ function handleClick(index) {
         checkGameOver();
     }
 }
+
+
+//update win count
+function updateWinCount(winner) {
+    if (winner === 'X') {
+        xWinCount++;
+        xWinCountElement.textContent = xWinCount;
+    } else if (winner === 'O') {
+        oWinCount++;
+        oWinCountElement.textContent = oWinCount;
+    }
+}
+
 
 // Check Game is Over or Not 
 function checkGameOver() {
@@ -65,12 +87,18 @@ function checkGameOver() {
             boxes[position[0]].classList.add("win");
             boxes[position[1]].classList.add("win");
             boxes[position[2]].classList.add("win");
+            updateWinCount(winner);
         }
     });
 
     if (winner !== "") {
         gameInfo.textContent = `Winner is - ${winner}`;
         newGameBtn.classList.add("active");
+        setTimeout(() => {
+            swapTurns();
+            initialize(); // Start a new game after 1 second
+            
+        }, 1000);
         return;
     }
 
@@ -86,6 +114,11 @@ function checkGameOver() {
     if (fillCount === 9) {
         gameInfo.textContent = "Game Tied !";
         newGameBtn.classList.add("active");
+        setTimeout(() => {
+            swapTurns();
+            initialize(); // Start a new game after 1 second
+            
+        }, 1000);
     }
 }
 
@@ -103,4 +136,12 @@ boxes.forEach((box, index) => {
 });
 
 // Add Event Listener to Button 
-newGameBtn.addEventListener('click', initialize);
+newGameBtn.addEventListener('click', ()=>{
+    xWinCount =0;
+    oWinCount =0;
+    xWinCountElement.textContent = xWinCount;
+    oWinCountElement.textContent = oWinCount;
+    startturn='X';
+    initialize();
+    
+});
