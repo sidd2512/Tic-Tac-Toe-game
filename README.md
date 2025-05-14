@@ -12,6 +12,8 @@ A simple and interactive Tic-Tac-Toe game built with HTML, CSS, and JavaScript. 
 - **Game restart**: After each game (win or tie), the game will automatically restart, with the starting player alternating between Player X and Player O.
 - **Responsive design**: The game interface is responsive and works on different screen sizes.
 
+## UI
+![](ui.jpeg)
 ## Technologies Used
 
 - **HTML**: Markup for the game interface.
